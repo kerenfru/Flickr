@@ -1,154 +1,88 @@
 package com.flickr.app;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.StringWriter;
+import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import javax.xml.stream.XMLEventReader;
-import javax.xml.stream.XMLEventWriter;
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.events.Characters;
-import javax.xml.stream.events.XMLEvent;
-import javax.xml.stream.XMLEventReader;
-import javax.xml.stream.XMLEventWriter;
-import javax.xml.stream.XMLInputFactory;
-
-import org.codehaus.jettison.mapped.MappedXMLOutputFactory;
-
-import java.io.StringReader;
-import java.util.HashMap;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.XML;
 
 public class RSSFeedParser {
-  static final String TITLE = "title";
-  static final String DESCRIPTION = "description";
-  static final String CHANNEL = "channel";
-  static final String LANGUAGE = "language";
-  static final String COPYRIGHT = "copyright";
-  static final String LINK = "link";
-  static final String AUTHOR = "author";
-  static final String ITEM = "item";
-  static final String PUB_DATE = "pubDate";
-  static final String GUID = "guid";
+	final URL url;
 
-  final URL url;
+	public RSSFeedParser(String feedUrl) {
+		try {
+			this.url = new URL(feedUrl);
+		} catch (MalformedURLException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	// read the feed by the given url
+	public String readFeed() {
+		try {
 
-  public RSSFeedParser(String feedUrl) {
-    try {
-      this.url = new URL(feedUrl);
-    } catch (MalformedURLException e) {
-      throw new RuntimeException(e);
-    }
-  }
+			InputStream in = read();
+			String result = getStringFromInputStream(in);
+			String v = xml2json(result);
 
-  public StringWriter readFeed() {
-//    Feed feed = null;
-    try {
-    	StringWriter a = new StringWriter();
-//      boolean isFeedHeader = true;
-//      // Set header values intial to the empty string
-//      String description = "";
-//      String title = "";
-//      String link = "";
-//      String language = "";
-//      String copyright = "";
-//      String author = "";
-//      String pubdate = "";
-//      String guid = "";
+			return v;
 
-      // First create a new XMLInputFactory
-      XMLInputFactory inputFactory = XMLInputFactory.newInstance();
-      // Setup a new eventReader
-      InputStream in = read();
-      XMLEventReader reader = inputFactory.createXMLEventReader(in);
-      
-      
-      XMLEventWriter writer = new MappedXMLOutputFactory(new HashMap()).createXMLEventWriter(a);
-      writer.add(reader);
-      writer.flush();
-      writer.close();
-      
-      return a;
-      
-      
-//      
-//      // read the XML document
-//      while (eventReader.hasNext()) {
-//        XMLEvent event = eventReader.nextEvent();
-//        if (event.isStartElement()) {
-//          String localPart = event.asStartElement().getName().getLocalPart();
-//          
-//          switch (localPart) {
-//          case ITEM:
-//            if (isFeedHeader) {
-//              isFeedHeader = false;
-//              feed = new Feed(title, link, description, language,
-//                  copyright, pubdate);
-//            }
-//            event = eventReader.nextEvent();
-//            break;
-//          case TITLE:
-//            title = getCharacterData(event, eventReader);
-//            break;
-//          case DESCRIPTION:
-//            description = getCharacterData(event, eventReader);
-//            break;
-//          case LINK:
-//            link = getCharacterData(event, eventReader);
-//            break;
-//          case GUID:
-//            guid = getCharacterData(event, eventReader);
-//            break;
-//          case LANGUAGE:
-//            language = getCharacterData(event, eventReader);
-//            break;
-//          case AUTHOR:
-//            author = getCharacterData(event, eventReader);
-//            break;
-//          case PUB_DATE:
-//            pubdate = getCharacterData(event, eventReader);
-//            break;
-//          case COPYRIGHT:
-//            copyright = getCharacterData(event, eventReader);
-//            break;
-//          }
-//        } else if (event.isEndElement()) {
-//          if (event.asEndElement().getName().getLocalPart() == (ITEM)) {
-//            FeedMessage message = new FeedMessage();
-//            message.setAuthor(author);
-//            message.setDescription(description);
-//            message.setGuid(guid);
-//            message.setLink(link);
-//            message.setTitle(title);
-//            feed.getMessages().add(message);
-//            event = eventReader.nextEvent();
-//            continue;
-//          }
-//        }
-//      }
-    } catch (XMLStreamException e) {
-      throw new RuntimeException(e);
-    }
-    //return feed;
-  }
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
 
-  private String getCharacterData(XMLEvent event, XMLEventReader eventReader)
-      throws XMLStreamException {
-    String result = "";
-    event = eventReader.nextEvent();
-    if (event instanceof Characters) {
-      result = event.asCharacters().getData();
-    }
-    return result;
-  }
+	// convert InputStream to String
+	private static String getStringFromInputStream(InputStream is) {
 
-  private InputStream read() {
-    try {
-      return url.openStream();
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
-  }
-} 
+		BufferedReader br = null;
+		StringBuilder sb = new StringBuilder();
+
+		String line;
+		try {
+
+			br = new BufferedReader(new InputStreamReader(is));
+			while ((line = br.readLine()) != null) {
+				sb.append(line);
+			}
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if (br != null) {
+				try {
+					br.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+
+		return sb.toString();
+	}
+
+	// Convert xml string to json string
+	private static String xml2json(String xml) {
+		String jsonPrettyPrintString = null;
+		try {
+			JSONObject xmlJSONObj = XML.toJSONObject(xml);
+			jsonPrettyPrintString = xmlJSONObj.toString(4);
+		} catch (JSONException je) {
+			System.out.println(je.toString());
+		}
+		return jsonPrettyPrintString;
+	}
+
+	private InputStream read() {
+		try {
+			return url.openStream();
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+}

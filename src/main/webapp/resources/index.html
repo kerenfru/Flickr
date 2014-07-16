@@ -17,7 +17,8 @@
 
   <ul>
     <li ng-repeat="item in app.people">
-        {{item.title}} {{item.link}}
+    	<p> <img src="{{item.enclosure.url}}" /> </p>
+        <p> {{item.title}}</p>
     </li>
   </ul>
 

@@ -5,6 +5,7 @@ app.controller("AppCtrl", function($http) {
     
     $http.get("http://localhost:8080/app/")
       .success(function(data) {
+    	 // console.log(data.rss.channel.item.enclosure.url);
         app.people = data.rss.channel.item;
       });
 
