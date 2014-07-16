@@ -2,14 +2,24 @@ package com.flickr.app;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.StringWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
 
 import javax.xml.stream.XMLEventReader;
+import javax.xml.stream.XMLEventWriter;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.Characters;
 import javax.xml.stream.events.XMLEvent;
+import javax.xml.stream.XMLEventReader;
+import javax.xml.stream.XMLEventWriter;
+import javax.xml.stream.XMLInputFactory;
+
+import org.codehaus.jettison.mapped.MappedXMLOutputFactory;
+
+import java.io.StringReader;
+import java.util.HashMap;
 
 public class RSSFeedParser {
   static final String TITLE = "title";
@@ -33,83 +43,95 @@ public class RSSFeedParser {
     }
   }
 
-  public Feed readFeed() {
-    Feed feed = null;
+  public StringWriter readFeed() {
+//    Feed feed = null;
     try {
-      boolean isFeedHeader = true;
-      // Set header values intial to the empty string
-      String description = "";
-      String title = "";
-      String link = "";
-      String language = "";
-      String copyright = "";
-      String author = "";
-      String pubdate = "";
-      String guid = "";
+    	StringWriter a = new StringWriter();
+//      boolean isFeedHeader = true;
+//      // Set header values intial to the empty string
+//      String description = "";
+//      String title = "";
+//      String link = "";
+//      String language = "";
+//      String copyright = "";
+//      String author = "";
+//      String pubdate = "";
+//      String guid = "";
 
       // First create a new XMLInputFactory
       XMLInputFactory inputFactory = XMLInputFactory.newInstance();
       // Setup a new eventReader
       InputStream in = read();
-      XMLEventReader eventReader = inputFactory.createXMLEventReader(in);
-      // read the XML document
-      while (eventReader.hasNext()) {
-        XMLEvent event = eventReader.nextEvent();
-        if (event.isStartElement()) {
-          String localPart = event.asStartElement().getName().getLocalPart();
-          
-          switch (localPart) {
-          case ITEM:
-            if (isFeedHeader) {
-              isFeedHeader = false;
-              feed = new Feed(title, link, description, language,
-                  copyright, pubdate);
-            }
-            event = eventReader.nextEvent();
-            break;
-          case TITLE:
-            title = getCharacterData(event, eventReader);
-            break;
-          case DESCRIPTION:
-            description = getCharacterData(event, eventReader);
-            break;
-          case LINK:
-            link = getCharacterData(event, eventReader);
-            break;
-          case GUID:
-            guid = getCharacterData(event, eventReader);
-            break;
-          case LANGUAGE:
-            language = getCharacterData(event, eventReader);
-            break;
-          case AUTHOR:
-            author = getCharacterData(event, eventReader);
-            break;
-          case PUB_DATE:
-            pubdate = getCharacterData(event, eventReader);
-            break;
-          case COPYRIGHT:
-            copyright = getCharacterData(event, eventReader);
-            break;
-          }
-        } else if (event.isEndElement()) {
-          if (event.asEndElement().getName().getLocalPart() == (ITEM)) {
-            FeedMessage message = new FeedMessage();
-            message.setAuthor(author);
-            message.setDescription(description);
-            message.setGuid(guid);
-            message.setLink(link);
-            message.setTitle(title);
-            feed.getMessages().add(message);
-            event = eventReader.nextEvent();
-            continue;
-          }
-        }
-      }
+      XMLEventReader reader = inputFactory.createXMLEventReader(in);
+      
+      
+      XMLEventWriter writer = new MappedXMLOutputFactory(new HashMap()).createXMLEventWriter(a);
+      writer.add(reader);
+      writer.flush();
+      writer.close();
+      
+      return a;
+      
+      
+//      
+//      // read the XML document
+//      while (eventReader.hasNext()) {
+//        XMLEvent event = eventReader.nextEvent();
+//        if (event.isStartElement()) {
+//          String localPart = event.asStartElement().getName().getLocalPart();
+//          
+//          switch (localPart) {
+//          case ITEM:
+//            if (isFeedHeader) {
+//              isFeedHeader = false;
+//              feed = new Feed(title, link, description, language,
+//                  copyright, pubdate);
+//            }
+//            event = eventReader.nextEvent();
+//            break;
+//          case TITLE:
+//            title = getCharacterData(event, eventReader);
+//            break;
+//          case DESCRIPTION:
+//            description = getCharacterData(event, eventReader);
+//            break;
+//          case LINK:
+//            link = getCharacterData(event, eventReader);
+//            break;
+//          case GUID:
+//            guid = getCharacterData(event, eventReader);
+//            break;
+//          case LANGUAGE:
+//            language = getCharacterData(event, eventReader);
+//            break;
+//          case AUTHOR:
+//            author = getCharacterData(event, eventReader);
+//            break;
+//          case PUB_DATE:
+//            pubdate = getCharacterData(event, eventReader);
+//            break;
+//          case COPYRIGHT:
+//            copyright = getCharacterData(event, eventReader);
+//            break;
+//          }
+//        } else if (event.isEndElement()) {
+//          if (event.asEndElement().getName().getLocalPart() == (ITEM)) {
+//            FeedMessage message = new FeedMessage();
+//            message.setAuthor(author);
+//            message.setDescription(description);
+//            message.setGuid(guid);
+//            message.setLink(link);
+//            message.setTitle(title);
+//            feed.getMessages().add(message);
+//            event = eventReader.nextEvent();
+//            continue;
+//          }
+//        }
+//      }
     } catch (XMLStreamException e) {
       throw new RuntimeException(e);
     }
-    return feed;
+    //return feed;
   }
 
   private String getCharacterData(XMLEvent event, XMLEventReader eventReader)
