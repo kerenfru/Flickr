@@ -1,0 +1,253 @@
+body {
+	margin-top: 30px !important;
+	background: url('../images/wood.png') repeat !important;
+	overflow-x: hidden;
+	padding-right: 20px;
+}
+
+h1 {
+	color: white !important;
+	margin-top: -40px;
+	font-family: blackjackregular !important;
+	font-size: 30px;
+	-webkit-transform: rotate(-2deg);
+	-webkit-transition: -webkit-transform .15s linear;
+	-moz-transform: rotate(-2deg);
+}
+
+span.reference {
+	position: fixed;
+	left: 10px;
+	bottom: 10px;
+	font-size: 11px;
+}
+
+span.reference a {
+	color: #555;
+	text-decoration: none;
+	text-shadow: 1px 1px 1px #fff;
+}
+
+span.reference a:hover {
+	color: #000;
+}
+
+p a,li .polaroid {
+	color: #7E3200;
+	font-family: blackjackregular !important;
+}
+
+p a:hover,li .polaroid:hover {
+	color: #461C00;
+}
+
+#hand {
+	width: 20%;
+	z-index: 999;
+}
+
+.loadFlickrButton {
+	float: right;
+	margin-top: -75px;
+}
+
+div#sidebarAd.cleanslate {
+	background: rgba(255, 255, 255, 0.25);
+}
+
+.CodeRay {
+	background: rgba(255, 255, 255, 0.75);
+}
+
+.row {
+	overflow: visible
+}
+
+.paperball {
+	background: transparent url(../images/paperball.png) no-repeat center
+		center;
+	position: absolute;
+}
+
+.details {
+	display: none;
+}
+
+.project-header {
+	margin-bottom: 1em;
+}
+
+@media screen and (max-width: 767px) {
+	.polaroids li:nth-child(n+5) {
+		display: none;
+	}
+}
+
+ul.polaroids li {
+	display: inline;
+}
+
+ul.polaroids .polaroid {
+	background: #fff;
+	display: none;
+	float: left;
+	margin: 0 0 27px 30px;
+	width: auto;
+	padding: 10px 10px 15px;
+	text-align: center;
+	font-family: "Marker Felt", sans-serif;
+	text-decoration: none;
+	color: #333;
+	font-size: 13px;
+	-webkit-box-shadow: 0 3px 6px rgba(0, 0, 0, .25);
+	-moz-box-shadow: 0 3px 6px rgba(0, 0, 0, .25);
+	-webkit-transform: rotate(-2deg);
+	-webkit-transition: -webkit-transform .15s linear;
+	-moz-transform: rotate(-2deg);
+}
+
+ul.polaroids li {
+	padding-left: 0;
+}
+
+@media screen and (max-width: 768px) {
+	ul.polaroids li .polaroid {
+		margin-left: 0;
+	}
+}
+
+ul.polaroids img {
+	display: block;
+	width: 170px;
+	height: 170px;
+	margin-bottom: 12px;
+}
+
+ul.polaroids .polaroid:after {
+	content: attr(title);
+}
+
+ul.polaroids li:nth-child(even) .polaroid {
+	-webkit-transform: rotate(2deg);
+	-moz-transform: rotate(2deg);
+}
+
+ul.polaroids li:nth-child(3n) .polaroid {
+	-webkit-transform: none;
+	position: relative;
+	top: -5px;
+	-moz-transform: none;
+}
+
+ul.polaroids li:nth-child(5n) .polaroid {
+	-webkit-transform: rotate(5deg);
+	position: relative;
+	right: 5px;
+	-moz-transform: rotate(5deg);
+}
+
+ul.polaroids li:nth-child(8n) .polaroid {
+	position: relative;
+	right: 5px;
+	top: 8px;
+}
+
+ul.polaroids li:nth-child(11n) .polaroid {
+	position: relative;
+	left: -5px;
+	top: 3px;
+}
+
+ul.polaroids li.messy .polaroid {
+	margin-top: -400px;
+	position: relative;
+	left: 160px;
+}
+
+ul.polaroids li .polaroid:hover {
+	/* 	-webkit-transform: scale(1.15);
+	-moz-transform: scale(1.15); */
+	-webkit-box-shadow: 0 3px 6px rgba(0, 0, 0, .5);
+	-moz-box-shadow: 0 3px 6px rgba(0, 0, 0, .5);
+	position: relative;
+	z-index: 5;
+}
+
+ul.polaroids span.zoom {
+	position: absolute;
+	width: 16px;
+	height: 16px;
+	right: -16px;
+	top: 40px;
+	cursor: pointer;
+	background: #fff url(../images/close.png) no-repeat center center;
+	-moz-border-radius: 0px 8px 8px 0px;
+	-webkit-border-top-right-radius: 8px;
+	-webkit-border-bottom-right-radius: 8px;
+	border-top-right-radius: 8px;
+	border-bottom-right-radius: 8px;
+	-moz-box-shadow: 1px 1px 5px #555;
+	-webkit-box-shadow: 1px 1px 5px #555;
+	box-shadow: 1px 1px 5px #555;
+}
+
+ul.polaroids span.detailsButton {
+	position: absolute;
+	width: 16px;
+	height: 16px;
+	right: -16px;
+	top: 20px;
+	cursor: pointer;
+	background: #fff url(../images/info.png) no-repeat center center;
+	-moz-border-radius: 0px 8px 8px 0px;
+	-webkit-border-top-right-radius: 8px;
+	-webkit-border-bottom-right-radius: 8px;
+	border-top-right-radius: 8px;
+	border-bottom-right-radius: 8px;
+	-moz-box-shadow: 1px 1px 5px #555;
+	-webkit-box-shadow: 1px 1px 5px #555;
+	box-shadow: 1px 1px 5px #555;
+}
+
+ul.polaroids span.delete {
+	position: absolute;
+	width: 16px;
+	height: 16px;
+	right: -16px;
+	top: 2px;
+	cursor: pointer;
+	background: #fff url(../images/close.png) no-repeat center center;
+	-moz-border-radius: 0px 8px 8px 0px;
+	-webkit-border-top-right-radius: 8px;
+	-webkit-border-bottom-right-radius: 8px;
+	border-top-right-radius: 8px;
+	border-bottom-right-radius: 8px;
+	-moz-box-shadow: 1px 1px 5px #555;
+	-webkit-box-shadow: 1px 1px 5px #555;
+	box-shadow: 1px 1px 5px #555;
+}
+
+.showDetails {
+	display: block !important;
+	width: 170px;
+	height: 170px;
+	margin-bottom: 12px;
+}
+
+/* .hideDetails {
+	display: none;
+} */
+.hideImg {
+	display: none !important;
+}
+
+@font-face {
+	font-family: 'blackjackregular';
+	src: url('fonts/black_jack-webfont.eot');
+	src: url('fonts/black_jack-webfont.eot?#iefix')
+		format('embedded-opentype'), url('fonts/black_jack-webfont.woff')
+		format('woff'), url('fonts/black_jack-webfont.ttf') format('truetype'),
+		url('fonts/black_jack-webfont.svg#blackjackregular') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
