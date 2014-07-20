@@ -5,7 +5,7 @@ var app = app || {};
 	var ImagesList = Backbone.Collection.extend({
 		model: app.Image,
 		url: function(){
-		    var url = 'http://localhost:8080/app-flickr/feed/';
+		    var url = 'http://localhost:8080/app/feed/';
 			if (app.search) {
 		      url = url + "author/" + app.search;
 		      
