@@ -50,7 +50,7 @@
 			<span class="detailsButton"></span>
 
 			<span class="details">
-				Title: <%= title %><br/>
+				Title: <%= (title.length > 150) ? title.substring(0, 150) + '...' : title %><br/>
 				Author: <a href="#" class="author"><%= author.name %></a><br/>
 				Date:  <%=  new Date(obj['dc:date.Taken']).toLocaleString() %><br/>
 				Link to the photo: <a href="<%= link[link.length-1].href %>">Click Here</a><br/>
@@ -84,22 +84,6 @@
 		href="js/guiJs/fancyBox/source/jquery.fancybox.css?v=2.1.5"
 		media="screen" />
 
-	<script>
-		$('.fancybox').fancybox();
-
-		$(document).foundation();
-
-		$(document).mousemove(function(e) {
-			$('#hand').offset({
-				left : e.pageX - 130,
-				top : e.pageY + 10
-			});
-		});
-
-		// animate the title
-		setInterval(function() {
-			$('h1').removeClass().addClass('hinge animated');
-		}, 18000);
-	</script>
+	<script src="js/init.js"></script>
 </body>
 </html>
