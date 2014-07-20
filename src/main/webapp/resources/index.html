@@ -11,16 +11,23 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Flickr Gallery</title>
 <link rel="stylesheet" href="css/style.css" />
+<link rel="stylesheet" href="css/animate.css">
 <link rel="stylesheet" href="css/foundation.css" />
 <script src="js/guiJs/vendor/modernizr.js"></script>
+<link rel="icon" type="image/png" href="images/favicon.ico">
 
 </head>
 <body>
+	<div class="titlewrapper">
+		<h1>Flickr Photos!</h1>
+	</div>
 
-	<h1>Flickr Photos!</h1>
+
 	<div id="container">
-		<div class="loadFlickrButton"><button class="loadFlickr">Load Flickr</button></div>
-	
+		<div class="loadFlickrButton">
+			<button class="loadFlickr">Load Flickr</button>
+		</div>
+
 		<div class="row">
 			<div class="large-12 columns" style="overflow: visible">
 				<ul class="polaroids large-block-grid-4 small-block-grid-2 photos"
@@ -30,8 +37,8 @@
 			</div>
 		</div>
 	</div>
-	
-	<img src="images/hand.png" id="hand"/>
+
+	<img src="images/hand.png" id="hand" />
 
 	<script type="text/template" id="image-template">
 	<span class="polaroid">
@@ -71,21 +78,28 @@
 	<script src="js/guiJs/foundation.min.js"></script>
 
 	<!-- Add fancyBox main JS and CSS files -->
-	<script type="text/javascript" src="js/guiJs/fancyBox/source/jquery.fancybox.js?v=2.1.5"></script>
-	<link rel="stylesheet" type="text/css" href="js/guiJs/fancyBox/source/jquery.fancybox.css?v=2.1.5" media="screen" />
+	<script type="text/javascript"
+		src="js/guiJs/fancyBox/source/jquery.fancybox.js?v=2.1.5"></script>
+	<link rel="stylesheet" type="text/css"
+		href="js/guiJs/fancyBox/source/jquery.fancybox.css?v=2.1.5"
+		media="screen" />
 
 	<script>
-	
-	$('.fancybox').fancybox();
+		$('.fancybox').fancybox();
+
 		$(document).foundation();
-		
-		
+
 		$(document).mousemove(function(e) {
-		    $('#hand').offset({
-		        left: e.pageX - 130,
-		        top: e.pageY + 10
-		    });
+			$('#hand').offset({
+				left : e.pageX - 130,
+				top : e.pageY + 10
+			});
 		});
+
+		// animate the title
+		setInterval(function() {
+			$('h1').removeClass().addClass('hinge animated');
+		}, 18000);
 	</script>
 </body>
 </html>

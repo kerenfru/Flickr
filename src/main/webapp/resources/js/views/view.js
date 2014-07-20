@@ -19,9 +19,31 @@ var app = app || {};
 					return this;
 				},
 				details : function() {
-					// show the details
-					this.$el.find('.details').toggleClass('showDetails');
-					this.$el.find('img').toggleClass('hideImg');
+					// details animation
+					var $that = this.$el;
+					
+					if (!this.$el.find('.details').hasClass('showDetails')) {
+						// flip polaroid
+						$that.find('.polaroid').addClass('flipOutY animated');
+	
+						// wait for half animation to be done
+						setTimeout(function() {
+							$that.find('.polaroid').removeClass('flipOutY animated');
+							$that.find('.polaroid').addClass('flipInY animated');
+							$that.find('.details').addClass('showDetails');
+							$that.find('img').addClass('hideImg');
+						},600);
+					}
+					else {
+						$that.find('.polaroid').addClass('flipOutY animated');
+						
+						setTimeout(function() {
+							$that.find('img').removeClass('hideImg');
+							$that.find('.details').removeClass('showDetails');
+							$that.find('.polaroid').removeClass('flipOutY animated');
+							$that.find('.polaroid').addClass('flipInY animated');
+						},600);
+					}
 				},
 				remove : function() {
 					// disappearing the image
