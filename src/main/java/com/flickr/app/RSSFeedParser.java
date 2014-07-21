@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.json.JSONException;
@@ -34,7 +33,7 @@ public class RSSFeedParser {
 	}
 
 	// convert InputStream to String
-	private String getStringFromInputStream(InputStream is) {
+	protected String getStringFromInputStream(InputStream is) {
 
 		BufferedReader br = null;
 		StringBuilder sb = new StringBuilder();
@@ -48,13 +47,14 @@ public class RSSFeedParser {
 			}
 
 		} catch (IOException e) {
-			e.printStackTrace();
+			System.out.println("Error getting string");
 		} finally {
 			if (br != null) {
 				try {
 					br.close();
 				} catch (IOException e) {
-					e.printStackTrace();
+					System.out.println("Error getting string");
+					return null;
 				}
 			}
 		}
@@ -63,7 +63,7 @@ public class RSSFeedParser {
 	}
 
 	// Convert xml string to json string
-	private String xml2json(String xml) {
+	protected String xml2json(String xml) {
 		String jsonPrettyPrintString = null;
 		try {
 			JSONObject xmlJSONObj = XML.toJSONObject(xml);
@@ -74,7 +74,7 @@ public class RSSFeedParser {
 		return jsonPrettyPrintString;
 	}
 
-	private InputStream read() {
+	protected InputStream read() {
 		try {
 			return url.openStream();
 		} catch (IOException e) {
