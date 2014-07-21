@@ -33,7 +33,7 @@ public class RSSFeedParser {
 	}
 
 	// convert InputStream to String
-	protected String getStringFromInputStream(InputStream is) {
+	private String getStringFromInputStream(InputStream is) {
 
 		BufferedReader br = null;
 		StringBuilder sb = new StringBuilder();
@@ -63,7 +63,7 @@ public class RSSFeedParser {
 	}
 
 	// Convert xml string to json string
-	protected String xml2json(String xml) {
+	public String xml2json(String xml) {
 		String jsonPrettyPrintString = null;
 		try {
 			JSONObject xmlJSONObj = XML.toJSONObject(xml);
@@ -74,7 +74,7 @@ public class RSSFeedParser {
 		return jsonPrettyPrintString;
 	}
 
-	protected InputStream read() {
+	private InputStream read() {
 		try {
 			return url.openStream();
 		} catch (IOException e) {

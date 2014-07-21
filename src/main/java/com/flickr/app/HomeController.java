@@ -3,7 +3,8 @@ package com.flickr.app;
 import java.io.IOException;
 import java.util.Locale;
 
-import org.json.*;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -40,7 +41,7 @@ public class HomeController {
 	@RequestMapping(value = "/feed", method = RequestMethod.GET)
 	@ResponseBody
 	public String parseFeed(Locale locale, Model model) {
-	    RSSFeedParser parser;
+		RSSFeedParser parser;
 		try {
 			parser = new RSSFeedParser(flickrFeedUrl);
 			return parse(parser).toString();
