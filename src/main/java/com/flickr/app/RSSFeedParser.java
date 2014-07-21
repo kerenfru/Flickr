@@ -14,14 +14,10 @@ import org.json.XML;
 public class RSSFeedParser {
 	final URL url;
 
-	public RSSFeedParser(String feedUrl) {
-		try {
-			this.url = new URL(feedUrl);
-		} catch (MalformedURLException e) {
-			throw new RuntimeException(e);
-		}
+	public RSSFeedParser(String feedUrl) throws IOException {
+		this.url = new URL(feedUrl);
 	}
-	
+
 	// read the feed by the given url
 	public String readFeed() {
 		try {
@@ -38,7 +34,7 @@ public class RSSFeedParser {
 	}
 
 	// convert InputStream to String
-	private static String getStringFromInputStream(InputStream is) {
+	private String getStringFromInputStream(InputStream is) {
 
 		BufferedReader br = null;
 		StringBuilder sb = new StringBuilder();
@@ -67,7 +63,7 @@ public class RSSFeedParser {
 	}
 
 	// Convert xml string to json string
-	private static String xml2json(String xml) {
+	private String xml2json(String xml) {
 		String jsonPrettyPrintString = null;
 		try {
 			JSONObject xmlJSONObj = XML.toJSONObject(xml);

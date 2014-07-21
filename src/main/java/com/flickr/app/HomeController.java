@@ -17,6 +17,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class HomeController {
 	
+	private final String flickrFeedUrl = "https://api.flickr.com/services/feeds/photos_public.gne"; 
+	private final String FEED = "feed";
+	private final String ENTRY = "entry";
+	private final String NOTVALID = " is not a valid xml feed.";
+	private final String ID = "?id=";
+	
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 * @throws IOException 
@@ -33,9 +39,15 @@ public class HomeController {
 	 */
 	@RequestMapping(value = "/feed", method = RequestMethod.GET)
 	@ResponseBody
-	public String parseFeed(Locale locale, Model model) throws IOException {
-	    RSSFeedParser parser = new RSSFeedParser("https://api.flickr.com/services/feeds/photos_public.gne");
-		return parse(parser).toString();
+	public String parseFeed(Locale locale, Model model) {
+	    RSSFeedParser parser;
+		try {
+			parser = new RSSFeedParser(flickrFeedUrl);
+			return parse(parser).toString();
+		} catch (IOException e) {
+			System.err.println(flickrFeedUrl + NOTVALID);
+		}
+		return null;
 	}
 	
 	/*
@@ -43,9 +55,16 @@ public class HomeController {
 	 */
 	@RequestMapping(value = "/feed/author/{author}", method = RequestMethod.GET)
 	@ResponseBody
-	public String parseFeedOfAuthor(@PathVariable String author) throws IOException {
-	    RSSFeedParser parser = new RSSFeedParser("https://api.flickr.com/services/feeds/photos_public.gne?id=" + author);
-		return parse(parser).toString();
+	public String parseFeedOfAuthor(@PathVariable String author) {
+	    RSSFeedParser parser;
+	    String authorUrl = flickrFeedUrl + ID + author;
+		try {
+			parser = new RSSFeedParser(authorUrl);
+			return parse(parser).toString();
+		} catch (IOException e) {
+			System.err.println(authorUrl + NOTVALID);
+		}
+		return null;
 	}
 	
 	/*
@@ -54,8 +73,8 @@ public class HomeController {
 	private JSONArray parse(RSSFeedParser parser) {
 	    String feed = parser.readFeed();
 	    JSONObject jsonObj = new JSONObject(feed);
-	    JSONObject feedjson = jsonObj.getJSONObject("feed");
-	    JSONArray arrayOfEntries = feedjson.getJSONArray("entry");
+	    JSONObject feedjson = jsonObj.getJSONObject(FEED);
+	    JSONArray arrayOfEntries = feedjson.getJSONArray(ENTRY);
 		return arrayOfEntries;
 	}
 	
